@@ -2,7 +2,8 @@ import pygame, sys
 
 def draw_game_start(screen):
     start_title_font = pygame.font.Font(None, 100)
-    button_font = pygame.font.Font(None, 70)
+    mode_font = pygame.font.Font(None, 70)
+    button_font = pygame.font.Font(None, 60)
 
     screen.fill((255, 255, 255))
 
@@ -11,10 +12,14 @@ def draw_game_start(screen):
         center=(800 // 2, 120))
     screen.blit(title_surface, title_rectangle)
 
+    mode_surface = mode_font.render("Select Game Mode:", 0, (0, 0, 255))
+    mode_rectangle = mode_surface.get_rect(
+        center=(400, 320))
+    screen.blit(mode_surface, mode_rectangle)
+
     easy_text = button_font.render("Easy", 0, (255, 255, 255))
     medium_text = button_font.render("Medium", 0, (255, 255, 255))
     hard_text = button_font.render("Hard", 0, (255, 255, 255))
-    quit_text = button_font.render("Quit", 0, (255, 255, 255))
 
     easy_surface = pygame.Surface((easy_text.get_size()[0] + 20, easy_text.get_size()[1] + 20))
     easy_surface.fill((0, 0, 255))
@@ -25,23 +30,17 @@ def draw_game_start(screen):
     hard_surface = pygame.Surface((hard_text.get_size()[0] + 20, hard_text.get_size()[1] + 20))
     hard_surface.fill((0, 0, 255))
     hard_surface.blit(hard_text, (10, 10))
-    quit_surface = pygame.Surface((quit_text.get_size()[0] + 20, quit_text.get_size()[1] + 20))
-    quit_surface.fill((0, 0, 255))
-    quit_surface.blit(quit_text, (10, 10))
 
     easy_rectangle = easy_surface.get_rect(
-        center=(200, 400))
+        center=(200, 450))
     medium_rectangle = medium_surface.get_rect(
-        center=(400, 400))
+        center=(400, 450))
     hard_rectangle = hard_surface.get_rect(
-        center=(600, 400))
-    quit_rectangle = quit_surface.get_rect(
-        center=(400, 600))
+        center=(600, 450))
     
     screen.blit(easy_surface, easy_rectangle)
     screen.blit(medium_surface, medium_rectangle)
     screen.blit(hard_surface, hard_rectangle)
-    screen.blit(quit_surface, quit_rectangle)
 
     while True:
         for event in pygame.event.get():
@@ -54,9 +53,18 @@ def draw_game_start(screen):
                     return
                 elif hard_rectangle.collidepoint(event.pos):
                     return
-                elif quit_rectangle.collidepoint(event.pos):
-                    sys.exit()
         pygame.display.update()
+
+
+"""
+def draw_board(screen):
+    board_surface = pygame.Surface((width, height))
+
+    for i in range(width):
+        pygame.draw.line(board_surface, (0, 0, 0), (i, 0), (i, height))
+    for i in range(height):
+        pygame.draw.line(board_surface, (0, 0, 0), (0, i), (width, i))
+"""
 
 
 if __name__ == '__main__':
