@@ -1,17 +1,17 @@
 import math, random
-from numpy import sqrt
-class Sudoku:
+class SudokuGenerator:
     def __init__(self, row_length, removed_cells):
         self.row_length = row_length
         self.removed_cells = removed_cells
         self.board = [[0] * row_length for _ in range(row_length)]
-        self.box_length = int(sqrt(row_length))
+        self.box_length = int(math.sqrt(row_length))
 
     def get_board(self):
         return self.board
         # Returns 2D board
     def print_board(self):
-        print(self.get_board())
+        for i in self.board:
+            print(i)
         # Prints board
     def valid_in_row(self, row, num):
         for i in self.board[row]:
@@ -33,9 +33,16 @@ class Sudoku:
         return True
         # checks if num is in box
     def is_valid(self, row, col, num):
-        if self.valid_in_row(row, num) and self.valid_in_col(col, row) == False:
+        row_start = (row % 3) * 3
+        col_start = (col % 3) * 3
+        if self.valid_in_col(col, num) == False:
+            return False
+        elif self.valid_in_box(row_start, col_start, num) == False:
+            return False
+        elif self.valid_in_row(row, num) == False:
             return False
         else:
+            print('t')
             return True
         # checks if input value is correct
     def fill_box(self, row_start, col_start):
