@@ -96,4 +96,9 @@ if __name__ == '__main__':
     draw_board(board, screen)
     pygame.display.flip()
 
-    pygame.time.delay(10000)
+    pygame.time.delay(500)
+
+    board = [[5 for i in range(9)] for j in range(9)]
+    draw_board(board, screen)
+    pygame.display.flip()
+    pygame.time.delay(500)
