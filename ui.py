@@ -56,22 +56,44 @@ def draw_game_start(screen):
         pygame.display.update()
 
 
-"""
-def draw_board(screen):
-    board_surface = pygame.Surface((width, height))
 
-    for i in range(width):
-        pygame.draw.line(board_surface, (0, 0, 0), (i, 0), (i, height))
-    for i in range(height):
-        pygame.draw.line(board_surface, (0, 0, 0), (0, i), (width, i))
-"""
+def draw_board(board, screen):
+    BLACK = (0, 0, 0)
+    WHITE = (255, 255, 255)
+    GREEN = (0, 255, 0)
+    RED = (255, 0, 0)
+    HEIGHT = 80
+    WIDTH = 80
+    MARGIN = 8
+    font = pygame.font.Font(None, 100)
+
+    screen.fill(BLACK)
+
+    for row in range(9):
+        for column in range(9):
+            if board[row][column] == 0:
+                color = GREEN
+            x_cord = (MARGIN + WIDTH) * column + MARGIN
+            y_cord = (MARGIN + HEIGHT) * row + MARGIN
+            pygame.draw.rect(screen, WHITE, (x_cord, y_cord, WIDTH, HEIGHT))
+            cell_value = str(board[row][column])
+            text_surface = font.render(cell_value, True, BLACK)
+            screen.blit(text_surface, (x_cord + 20, y_cord + 10))
+
 
 
 if __name__ == '__main__':
     pygame.init()
     screen = pygame.display.set_mode((800, 800))
+    board = [[1 for i in range(9)] for j in range(9)]
+    print(board)
     pygame.display.set_caption("Sudoku")
 
     draw_game_start(screen)
-
+    
     screen.fill((255, 255, 255))
+
+    draw_board(board, screen)
+    pygame.display.flip()
+
+    pygame.time.delay(10000)
