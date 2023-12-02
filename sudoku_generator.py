@@ -1,5 +1,5 @@
 import math, random
-
+from numpy import sqrt
 class Sudoku:
     def __init__(self, row_length, removed_cells):
         self.row_length = row_length
@@ -11,7 +11,7 @@ class Sudoku:
         return self.board
         # Returns 2D board
     def print_board(self):
-        print(get_board(self))
+        print(self.get_board())
         # Prints board
     def valid_in_row(self, row, num):
         for i in self.board[row]:
@@ -20,10 +20,9 @@ class Sudoku:
         return True
         # checks if num is in row of board
     def valid_in_col(self, col, num):
-        for i in range(0, self.board):
-            for j in self.board[i][col]:
-                if num == j:
-                    return False
+        for i in range(0, 9):
+            if num == self.board[i][col]:
+                return False
         return True
         # checks if num is in col of board
     def valid_in_box(self, row_start, col_start, num):
@@ -34,7 +33,7 @@ class Sudoku:
         return True
         # checks if num is in box
     def is_valid(self, row, col, num):
-        if self.board[row][col] != real_board[row][col]:
+        if self.valid_in_row(row, num) and self.valid_in_col(col, row) == False:
             return False
         else:
             return True
@@ -43,12 +42,12 @@ class Sudoku:
         num = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         for i in range(3):
             for j in range(3):
-                self.board[row_start + i][i + col_start] = num.pop(randomrandrange(len(num)))
+                self.board[row_start + i][j + col_start] = num.pop(random.randrange(len(num)))
         # fills box.
 
     def fill_diagonal(self):
         for i in range(3):
-            fill_box(i*3, i*3)
+            self.fill_box(i*3, i*3)
         # fills diagnol boxes from top left to bottom right
 
     def fill_remaining(self, row, col):
@@ -85,10 +84,10 @@ class Sudoku:
     def remove_cells(self):
         while self.removed_cells > 0:
             self.removed_cells -= 1
-            col = random.randint(0, 9)
-            row = random.randrange(10)
-            if board[col][row] != 0:
-                board[col][row] = 0
+            col = random.randrange(9)
+            row = random.randrange(9)
+            if self.board[col][row] != 0:
+                self.board[col][row] = 0
             else:
                 self.removed_cells += 1
         return self.board
