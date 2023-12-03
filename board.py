@@ -64,9 +64,9 @@ class Board:
         self.selected_cell = self.cell_2D_array[row][col]
 
     def click(self, x, y):
-        if 0 < x < 600 and 0 < y < 600:
-            x = x // (600 / 9) + 1
-            y = y // (600 / 9) + 1
+        if 0 < x < self.width and 0 < y < self.height:
+            x = x // (self.width / 9) + 1
+            y = y // (self.height / 9) + 1
             tuple_1 = (x, y)
             return tuple_1
         else:
