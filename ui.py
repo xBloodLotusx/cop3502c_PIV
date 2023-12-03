@@ -1,6 +1,6 @@
 import pygame, sys
 
-def draw_game_start(screen):
+def draw_game_start(screen, height, width):
     start_title_font = pygame.font.Font(None, 100)
     mode_font = pygame.font.Font(None, 70)
     button_font = pygame.font.Font(None, 60)
@@ -9,12 +9,12 @@ def draw_game_start(screen):
 
     title_surface = start_title_font.render("Sudoku", 0, (0, 0, 255))
     title_rectangle = title_surface.get_rect(
-        center=(800 // 2, 120))
+        center=(width // 2, 120))
     screen.blit(title_surface, title_rectangle)
 
     mode_surface = mode_font.render("Select Game Mode:", 0, (0, 0, 255))
     mode_rectangle = mode_surface.get_rect(
-        center=(400, 320))
+        center=(width // 2, 320))
     screen.blit(mode_surface, mode_rectangle)
 
     easy_text = button_font.render("Easy", 0, (255, 255, 255))
@@ -32,11 +32,11 @@ def draw_game_start(screen):
     hard_surface.blit(hard_text, (10, 10))
 
     easy_rectangle = easy_surface.get_rect(
-        center=(200, 450))
+        center=(width // 2 - 200, 450))
     medium_rectangle = medium_surface.get_rect(
-        center=(400, 450))
+        center=(width // 2, 450))
     hard_rectangle = hard_surface.get_rect(
-        center=(600, 450))
+        center=(width // 2 + 200, 450))
     
     screen.blit(easy_surface, easy_rectangle)
     screen.blit(medium_surface, medium_rectangle)
@@ -55,6 +55,36 @@ def draw_game_start(screen):
                     return
         pygame.display.update()
 
+
+def draw_game_buttons(screen, height, width):
+    button_font = pygame.font.Font(None, 40)
+
+    reset_text = button_font.render("Reset", 0, (255, 255, 255))
+    restart_text = button_font.render("Restart", 0, (255, 255, 255))
+    exit_text = button_font.render("Exit", 0, (255, 255, 255))
+
+    reset_surface = pygame.Surface((reset_text.get_size()[0] + 20, reset_text.get_size()[1] + 20))
+    reset_surface.fill((0, 0, 255))
+    reset_surface.blit(reset_text, (10, 10))
+    restart_surface = pygame.Surface((restart_text.get_size()[0] + 20, restart_text.get_size()[1] + 20))
+    restart_surface.fill((0, 0, 255))
+    restart_surface.blit(restart_text, (10, 10))
+    exit_surface = pygame.Surface((exit_text.get_size()[0] + 20, exit_text.get_size()[1] + 20))
+    exit_surface.fill((0, 0, 255))
+    exit_surface.blit(exit_text, (10, 10))
+
+    reset_rectangle = reset_surface.get_rect(
+        center=(width // 2 - 200, 550))
+    restart_rectangle = restart_surface.get_rect(
+        center=(width // 2, 550))
+    exit_rectangle = exit_surface.get_rect(
+        center=(width // 2 + 200, 550))
+    
+    screen.blit(reset_surface, reset_rectangle)
+    screen.blit(restart_surface, restart_rectangle)
+    screen.blit(exit_surface, exit_rectangle)
+
+    pygame.display.update()
 
 
 def draw_board(board, screen):
@@ -84,14 +114,21 @@ def draw_board(board, screen):
 
 if __name__ == '__main__':
     pygame.init()
-    screen = pygame.display.set_mode((800, 800))
+    height = 600
+    width = 600
+    screen = pygame.display.set_mode((height, width))
+    pygame.display.set_caption("Sudoku")
+    draw_game_start(screen, height, width)
+    screen.fill((255, 255, 255))
+    pygame.display.flip()
+    draw_game_buttons(screen, height, width)
+    pygame.time.delay(5000)
+
+
+
+    """
     board = [[1 for i in range(9)] for j in range(9)]
     print(board)
-    pygame.display.set_caption("Sudoku")
-
-    draw_game_start(screen)
-    
-    screen.fill((255, 255, 255))
 
     draw_board(board, screen)
     pygame.display.flip()
@@ -102,3 +139,6 @@ if __name__ == '__main__':
     draw_board(board, screen)
     pygame.display.flip()
     pygame.time.delay(500)
+    """
+
+   
