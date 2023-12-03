@@ -8,7 +8,15 @@ class Board:
         self.height = height
         self.screen = screen
         self.difficulty = difficulty
-        self.cells = []
+        self.cell_2D_array = []
+        self.cell_row = []
+        self.selected_cell = None
+
+        for i in range(1, 10):
+            for j in range(1, 10):
+                self.cell_row.append(Cell(0, i, j, self.screen))
+            self.cell_2D_array.append(self.cell_row)
+            self.cell_row = []
 
     def draw(self):
         # Horizontal lines
@@ -42,11 +50,47 @@ class Board:
         pass
 
     def select(self, row, col):
-        pass
+        self.cell_2D_array[row][col].draw()
+        self.selected_cell = self.cell_2D_array[row][col]
 
     def click(self, x, y):
-        pass
+        if 0 < x < 600 and 0 < y < 600:
+            x = x // (600 / 9) + 1
+            y = y // (600 / 9) + 1
+            tuple_1 = (x, y)
+            return tuple_1
+        else:
+            return None
 
     def clear(self):
-        Cell.set_cell_value(Cell, None)
-        Cell.set_sketched_value(Cell, None)
+        self.selected_cell.set_cell_value(0)
+
+    def sketch(self, value):
+        self.selected_cell.set_sketched_value(value)
+        self.selected_cell.draw()
+
+    def place_number(self, value):
+        self.selected_cell.set_cell_value(value)
+
+    def reset_to_original(self):
+        pass
+
+    def is_full(self):
+        capacity = 0
+        for rows in self.cell_2D_array:
+            for cols in rows:
+                if self.cell_2D_array[rows][cols] != 0:
+                    capacity += 1
+        if capacity == 81:
+            return True
+        else:
+            return False
+
+    def update_board(self):
+        pass
+
+    def find_empty(self):
+        pass
+
+    def check_board(self):
+        pass
