@@ -33,17 +33,17 @@ class SudokuGenerator:
         return True
         # checks if num is in box
     def is_valid(self, row, col, num):
-        row_start = (row % 3) * 3
-        col_start = (col % 3) * 3
-        if self.valid_in_col(col, num) == False:
-            return False
-        elif self.valid_in_box(row_start, col_start, num) == False:
-            return False
-        elif self.valid_in_row(row, num) == False:
-            return False
-        else:
-            print('t')
-            return True
+        row_start = (row // 3) * 3
+        col_start = (col // 3) * 3
+        if self.board[row][col] == 0:
+            if self.valid_in_col(col, num) == False:
+                return False
+            elif self.valid_in_box(row_start, col_start, num) == False:
+                return False
+            elif self.valid_in_row(row, num) == False:
+                return False
+            else:
+                return True
         # checks if input value is correct
     def fill_box(self, row_start, col_start):
         num = [1, 2, 3, 4, 5, 6, 7, 8, 9]
