@@ -85,13 +85,10 @@ class Board:
         self.selected_cell = self.cell_2D_array[row][col]
 
     def click(self, x, y):
-        if 0 < x < self.width and 0 < y < self.height:
-            x = x // (self.width / 9) + 1
-            y = y // (self.height / 9) + 1
-            tuple_1 = (x, y)
-            return tuple_1
-        else:
-            return None
+        row = (x + 12) // (600 / 9)
+        col = (y + 12) // (500 / 9)
+        tuple_1 = (col, row)
+        return tuple_1
 
     def clear(self):
         self.selected_cell.set_cell_value(0)
@@ -104,6 +101,7 @@ class Board:
         self.selected_cell.set_cell_value(value)
 
     def reset_to_original(self):
+
         pass
 
     def is_full(self):
