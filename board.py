@@ -100,7 +100,13 @@ class Board:
         pass
 
     def find_empty(self):
-        pass
+        for rows in self.cell_2D_array:
+            for cols in rows:
+                if cols.value == 0:
+                    tuple_2 = (cols.row, cols.col)
+                    return tuple_2
+                else:
+                    pass
 
     def check_board(self):
         values_to_check = [1, 2, 3, 4, 5, 6, 7, 8, 9]
