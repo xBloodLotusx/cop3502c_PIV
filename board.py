@@ -21,36 +21,46 @@ class Board:
     def draw(self):
         # Horizontal lines
 
-        pygame.draw.line(self.screen, (245, 152, 66), (0, (500 / 3)), (600, (500 / 3)), 14)
-        pygame.draw.line(self.screen, (245, 152, 66), (0, (1000 / 3)), (600, (1000 / 3)), 14)
-        pygame.draw.line(self.screen, (245, 152, 66), (0, (1500 / 3)), (600, (1500 / 3)), 14)
+        pygame.draw.line(self.screen, (245, 152, 66), (0, (self.height / 3)), (self.width, (self.height / 3)), 14)
+        pygame.draw.line(self.screen, (245, 152, 66), (0, ((self.height * 2) / 3)), (self.width, ((self.height * 2) / 3)), 14)
+        pygame.draw.line(self.screen, (245, 152, 66), (0, ((self.height * 3) / 3)), (self.width, ((self.height * 3) / 3)), 14)
 
-        pygame.draw.line(self.screen, (245, 152, 66), (0, (500 / 3) / 3), (600, (500 / 3) / 3), 4)
-        pygame.draw.line(self.screen, (245, 152, 66), (0, (1000 / 3) / 3), (600, (1000 / 3) / 3), 4)
+        pygame.draw.line(self.screen, (245, 152, 66), (0, self.height / 9), (self.width, self.height / 9), 4)
+        pygame.draw.line(self.screen, (245, 152, 66), (0, (self.height * 2) / 9), (self.width, (self.height * 2) / 9), 4)
 
-        pygame.draw.line(self.screen, (245, 152, 66), (0, (2000 / 3) / 3), (600, (2000 / 3) / 3), 4)
-        pygame.draw.line(self.screen, (245, 152, 66), (0, (2500 / 3) / 3), (600, (2500 / 3) / 3), 4)
+        pygame.draw.line(self.screen, (245, 152, 66), (0, (self.height * 4) / 9), (self.width, (self.height * 4) / 9), 4)
+        pygame.draw.line(self.screen, (245, 152, 66), (0, (self.height * 5) / 9), (self.width, (self.height * 5) / 9), 4)
 
-        pygame.draw.line(self.screen, (245, 152, 66), (0, (3500 / 3) / 3), (600, (3500 / 3) / 3), 4)
-        pygame.draw.line(self.screen, (245, 152, 66), (0, (4000 / 3) / 3), (600, (4000 / 3) / 3), 4)
+        pygame.draw.line(self.screen, (245, 152, 66), (0, (self.height * 7) / 9), (self.width, (self.height * 7) / 9), 4)
+        pygame.draw.line(self.screen, (245, 152, 66), (0, (self.height * 8) / 9), (self.width, (self.height * 8) / 9), 4)
         # VERTICAL LINES
 
-        pygame.draw.line(self.screen, color=(245, 152, 66), start_pos=(200, 0), end_pos=(200, 500), width=14)
-        pygame.draw.line(self.screen, color=(245, 152, 66), start_pos=(400, 0), end_pos=(400, 500), width=14)
+        pygame.draw.line(self.screen, color=(245, 152, 66), start_pos=(self.width / 3, 0), end_pos=(self.width / 3, self.height), width=14)
+        pygame.draw.line(self.screen, color=(245, 152, 66), start_pos=((self.width * 2) / 3, 0), end_pos=((self.width * 2) / 3, self.height), width=14)
 
-        pygame.draw.line(self.screen, (245, 152, 66), ((600 / 3) / 3, 0), ((600 / 3) / 3, 500), 4)
-        pygame.draw.line(self.screen, (245, 152, 66), ((1200 / 3) / 3, 0), ((1200 / 3) / 3, 500), 4)
+        pygame.draw.line(self.screen, (245, 152, 66), (self.width / 9, 0), (self.width / 9, self.height), 4)
+        pygame.draw.line(self.screen, (245, 152, 66), ((self.width * 2) / 9, 0), ((self.width * 2) / 9, self.height), 4)
 
-        pygame.draw.line(self.screen, (245, 152, 66), ((2400 / 3) / 3, 0), ((2400 / 3) / 3, 500), 4)
-        pygame.draw.line(self.screen, (245, 152, 66), ((3000 / 3) / 3, 0), ((3000 / 3) / 3, 500), 4)
+        pygame.draw.line(self.screen, (245, 152, 66), ((self.width * 4) / 9, 0), ((self.width * 4) / 9, self.height), 4)
+        pygame.draw.line(self.screen, (245, 152, 66), ((self.width * 5) / 9, 0), ((self.width * 5) / 9, self.height), 4)
 
-        pygame.draw.line(self.screen, (245, 152, 66), ((4200 / 3) / 3, 0), ((4200 / 3) / 3, 500), 4)
-        pygame.draw.line(self.screen, (245, 152, 66), ((4800 / 3) / 3, 0), ((4800 / 3) / 3, 500), 4)
-
+        pygame.draw.line(self.screen, (245, 152, 66), ((self.width * 7) / 9, 0), ((self.width * 7) / 9, self.height), 4)
+        pygame.draw.line(self.screen, (245, 152, 66), ((self.width * 8) / 9, 0), ((self.width * 8) / 9, self.height), 4)
         pass
 
     def select(self, row, col):
-        self.cell_2D_array[row][col].draw()
+        self.selected_cell = None
+        # Highlights selected cell in red
+        pygame.draw.line(self.screen, (255, 0, 0), ((self.width / 9) * (col - 1), (self.height / 9) * row),
+                         ((self.width / 9) * col, (self.height / 9) * row), 7)
+        pygame.draw.line(self.screen, (255, 0, 0), ((self.width / 9) * (col - 1), (self.height / 9) * (row - 1)),
+                         ((self.width / 9) * col, (self.height / 9) * (row - 1)), 7)
+
+        pygame.draw.line(self.screen, (255, 0, 0), ((self.width / 9) * (col - 1), (self.height / 9) * (row - 1)),
+                         ((self.width / 9) * (col - 1), (self.height / 9) * row), 7)
+        pygame.draw.line(self.screen, (255, 0, 0), ((self.width / 9) * col, (self.height / 9) * (row - 1)),
+                         ((self.width / 9) * col, (self.height / 9) * row), 7)
+
         self.selected_cell = self.cell_2D_array[row][col]
 
     def click(self, x, y):
@@ -93,4 +103,25 @@ class Board:
         pass
 
     def check_board(self):
-        pass
+        values_to_check = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        list_of_cell_values = []
+        # Checking each row for winner by using the all function
+        for rows in range(0, 9):
+            for cols in range(0, 9):
+                list_of_cell_values.append(self.cell_2D_array[rows][cols].value)
+            if all(value in list_of_cell_values for value in values_to_check):
+                pass
+            else:
+                return False
+            list_of_cell_values = []
+
+        # checking each col for winner by using the all function
+        for cols in range(0, 9):
+            for rows in range(0, 9):
+                list_of_cell_values.append(self.cell_2D_array[rows][cols].value)
+            if all(value in list_of_cell_values for value in values_to_check):
+                pass
+            else:
+                return False
+        # if any row or col returns false it means it's not a solution and is an automatic False
+        return True
