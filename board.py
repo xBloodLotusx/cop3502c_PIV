@@ -1,6 +1,7 @@
 from cell import Cell
+from sudoku_generator import SudokuGenerator as SG
+import pygame
 
-import pygame, sys
 
 class Board:
     def __init__(self, width, height, screen, difficulty):
@@ -11,10 +12,30 @@ class Board:
         self.cell_2D_array = []
         self.cell_row = []
         self.selected_cell = None
+        self.sudoku_array = None
+        self.sudoku_values = None
+
+        if self.difficulty == "Easy":
+            self.sudoku_array = SG(9, 30)
+            self.sudoku_array.fill_values()
+            self.sudoku_array.remove_cells()
+            self.sudoku_values = self.sudoku_array.get_board()
+
+        if self.difficulty == "Medium":
+            self.sudoku_array = SG(9, 40)
+            self.sudoku_array.fill_values()
+            self.sudoku_array.remove_cells()
+            self.sudoku_values = self.sudoku_array.get_board()
+
+        if self.difficulty == "Hard":
+            self.sudoku_array = SG(9, 50)
+            self.sudoku_array.fill_values()
+            self.sudoku_array.remove_cells()
+            self.sudoku_values = self.sudoku_array.get_board()
 
         for i in range(1, 10):
             for j in range(1, 10):
-                self.cell_row.append(Cell(0, i, j, self.screen))
+                self.cell_row.append(Cell(self.sudoku_values[i - 1][j - 1], i, j, self.screen))
             self.cell_2D_array.append(self.cell_row)
             self.cell_row = []
 
@@ -87,10 +108,12 @@ class Board:
 
     def is_full(self):
         capacity = 0
-        for rows in self.cell_2D_array:
-            for cols in rows:
-                if self.cell_2D_array[rows][cols] != 0:
+        for rows in range(0, 9):
+            for cols in range(0, 9):
+                if self.cell_2D_array[rows][cols].value != 0:
                     capacity += 1
+                else:
+                    pass
         if capacity == 81:
             return True
         else:
