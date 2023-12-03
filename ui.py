@@ -139,6 +139,7 @@ if __name__ == '__main__':
     draw_board(board, screen)
     pygame.display.flip()
     pygame.time.delay(500)
+    bruh
     """
 
    
