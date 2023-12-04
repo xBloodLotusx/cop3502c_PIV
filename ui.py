@@ -147,6 +147,7 @@ if __name__ == '__main__':
         while loop_var:
             # event loop
             for event in pygame.event.get():
+
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
@@ -159,7 +160,28 @@ if __name__ == '__main__':
                     elif exit_rectangle.collidepoint(event.pos):
                         sys.exit()
                     else:
-                        board.click()
+                        tuple_position = board.click(event.pos[0], event.pos[1])
+                        if tuple_position is not None:
+                            board.select(tuple_position[1], tuple_position[0])
+                if event.type == pygame.TEXTINPUT:
+                    try:
+                        if 1 <= int(event.text) <= 9:
+                            value_input = event.text
+                            board.sketch(value_input)
+                    except ValueError:
                         pass
+
+                if event.type == pygame.KEYDOWN:
+                    if board.selected_cell.sketched_value != 0:
+                        if event.key == 13:
+                            board.place_number(board.selected_cell.sketched_value)
+                        if board.is_full():
+                            board.check_board()
+                            print(board.check_board())
+                        if board.is_full is False:
+                            pass
+
+
+
 
             pygame.display.update()
