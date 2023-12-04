@@ -45,6 +45,12 @@ class Cell:
         text_surface = font.render(current_value, True, white)
         self.screen.blit(text_surface, ((self.col - 1) * 600 / 9 + 15, (self.row - 1) * 500 / 9 + 3))
 
+    def clear_input_value(self):
+        white = (255, 255, 255)
+        font = pygame.font.Font(None, 66)
+        text_surface = font.render(str(self.value), True, white)
+        self.screen.blit(text_surface, ((self.col - 1) * 600 / 9 + 15, (self.row - 1) * 500 / 9 + 3))
+        pass
 """
       if self.color == 1:
             grey = (129, 129, 129)
