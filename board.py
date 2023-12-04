@@ -120,6 +120,14 @@ class Board:
         self.selected_cell.draw_true()
 
     def reset_to_original(self):
+        for i in range(0, 9):
+            for j in range(0, 9):
+                if self.cell_2D_array[i][j].sketched_value != 0:
+                    self.cell_2D_array[i][j].clear_sketch()
+                    self.cell_2D_array[i][j].set_sketched_value(0)
+
+                    self.cell_2D_array[i][j].clear_input_value()
+                    self.cell_2D_array[i][j].set_cell_value(0)
         pass
 
     def is_full(self):
