@@ -175,7 +175,6 @@ if __name__ == '__main__':
                         board.reset_to_original()
                     elif restart_rectangle.collidepoint(event.pos):
                         loop_var = False
-                        break
                     elif exit_rectangle.collidepoint(event.pos):
                         sys.exit()
                     else:
@@ -195,35 +194,37 @@ if __name__ == '__main__':
                         if event.key == 13:
                             board.place_number(board.selected_cell.sketched_value)
                         if board.is_full():
-                            board.check_board()
-                            print(board.check_board())
-                            if board.check_board():
-                                screen.fill((255, 255, 255))
-                                draw_game_won(screen, height, width)
-                                for event in pygame.event.get():
-                                    if event.type == pygame.QUIT:
-                                        pygame.quit()
-                                        sys.exit()
-                                    if event.type == pygame.MOUSEBUTTONDOWN:
-                                        if exit_game_rectangle.collidepoint(event.pos):
-                                            sys.exit()
-                            else:
-                                screen.fill((255, 255, 255))
-                                draw_game_over(screen, height, width)
-                                for event in pygame.event.get():
-                                    if event.type == pygame.QUIT:
-                                        pygame.quit()
-                                        sys.exit()
-                                    if event.type == pygame.MOUSEBUTTONDOWN:
-                                        if restart_game_rectangle.collidepoint(event.pos):
-                                            loop_var = False
-                                            break
+                            loop_var = False
                         if board.is_full is False:
                             pass
 
-
-
-
             pygame.display.update()
+
+        loop_var2 = True
+        while loop_var2:
+            board.check_board()
+            print(board.check_board())
+            if board.check_board():
+                screen.fill((255, 255, 255))
+                draw_game_won(screen, height, width)
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if exit_game_rectangle.collidepoint(event.pos):
+                            sys.exit()
+            else:
+                screen.fill((255, 255, 255))
+                draw_game_over(screen, height, width)
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if restart_game_rectangle.collidepoint(event.pos):
+                            screen.fill((255, 255, 255))
+                            loop_var2 = False
+                pygame.display.update()
 
 # bruh
