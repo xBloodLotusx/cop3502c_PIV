@@ -101,30 +101,49 @@ def draw_game_buttons(screen, height, width):
 
     pygame.display.update()
 
+def draw_game_won(screen, height, width):
+    title_font = pygame.font.Font(None, 100)
+    button_font = pygame.font.Font(None, 60)
 
-def draw_board(board, screen):
-    BLACK = (0, 0, 0)
-    WHITE = (255, 255, 255)
-    GREEN = (0, 255, 0)
-    RED = (255, 0, 0)
-    HEIGHT = 80
-    WIDTH = 80
-    MARGIN = 8
-    font = pygame.font.Font(None, 100)
+    title_surface = title_font.render("Game Won!", 0, (0, 0, 255))
+    title_rectangle = title_surface.get_rect(
+        center=(width // 2, 120))
+    screen.blit(title_surface, title_rectangle)
 
-    screen.fill(BLACK)
+    exit_game_text = button_font.render("Exit", 0, (255, 255, 255))
 
-    for row in range(9):
-        for column in range(9):
-            if board[row][column] == 0:
-                color = GREEN
-            x_cord = (MARGIN + WIDTH) * column + MARGIN
-            y_cord = (MARGIN + HEIGHT) * row + MARGIN
-            pygame.draw.rect(screen, WHITE, (x_cord, y_cord, WIDTH, HEIGHT))
-            cell_value = str(board[row][column])
-            text_surface = font.render(cell_value, True, BLACK)
-            screen.blit(text_surface, (x_cord + 20, y_cord + 10))
+    exit_game_surface = pygame.Surface((exit_game_text.get_size()[0] + 20, exit_game_text.get_size()[1] + 20))
+    exit_game_surface.fill((0, 0, 255))
+    exit_game_surface.blit(exit_game_text, (10, 10))
 
+    global exit_game_rectangle
+
+    exit_game_rectangle = exit_game_surface.get_rect(
+        center=(width // 2, 450))
+    
+    screen.blit(exit_game_surface, exit_game_rectangle)
+
+def draw_game_over(screen, height, width):
+    title_font = pygame.font.Font(None, 100)
+    button_font = pygame.font.Font(None, 60)
+
+    title_surface = title_font.render("Game Over :(", 0, (0, 0, 255))
+    title_rectangle = title_surface.get_rect(
+        center=(width // 2, 120))
+    screen.blit(title_surface, title_rectangle)
+
+    restart_game_text = button_font.render("Restart", 0, (255, 255, 255))
+
+    restart_game_surface = pygame.Surface((restart_game_text.get_size()[0] + 20, restart_game_text.get_size()[1] + 20))
+    restart_game_surface.fill((0, 0, 255))
+    restart_game_surface.blit(restart_game_text, (10, 10))
+
+    global restart_game_rectangle
+
+    restart_game_rectangle = restart_game_surface.get_rect(
+        center=(width // 2, 450))
+    
+    screen.blit(restart_game_surface, restart_game_rectangle)
 
 if __name__ == '__main__':
     while True:
@@ -153,7 +172,7 @@ if __name__ == '__main__':
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if reset_rectangle.collidepoint(event.pos):
-                        pass
+                        board.reset_to_original()
                     elif restart_rectangle.collidepoint(event.pos):
                         loop_var = False
                         break
@@ -178,6 +197,27 @@ if __name__ == '__main__':
                         if board.is_full():
                             board.check_board()
                             print(board.check_board())
+                            if board.check_board():
+                                screen.fill((255, 255, 255))
+                                draw_game_won(screen, height, width)
+                                for event in pygame.event.get():
+                                    if event.type == pygame.QUIT:
+                                        pygame.quit()
+                                        sys.exit()
+                                    if event.type == pygame.MOUSEBUTTONDOWN:
+                                        if exit_game_rectangle.collidepoint(event.pos):
+                                            sys.exit()
+                            else:
+                                screen.fill((255, 255, 255))
+                                draw_game_over(screen, height, width)
+                                for event in pygame.event.get():
+                                    if event.type == pygame.QUIT:
+                                        pygame.quit()
+                                        sys.exit()
+                                    if event.type == pygame.MOUSEBUTTONDOWN:
+                                        if restart_game_rectangle.collidepoint(event.pos):
+                                            loop_var = False
+                                            break
                         if board.is_full is False:
                             pass
 
