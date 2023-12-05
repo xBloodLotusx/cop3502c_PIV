@@ -17,6 +17,7 @@ class Board:
         self.sudoku_values = None
         self.tru_board = None
         self.board = []
+        self.curr_board = []
 
         if self.difficulty == "Easy":
             self.sudoku_array = SG(9, 30)
@@ -162,17 +163,18 @@ class Board:
 
     def check_board(self):
         values_to_check = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-        curr_board = []
+        self.curr_board = []
         row_list = []
         # Checking each row for winner by using the all function
         for rows in range(0, 9):
             for cols in range(0, 9):
                 row_list.append(self.cell_2D_array[rows][cols].value)
-            curr_board.append(row_list)
+            self.curr_board.append(row_list)
+            row_list = []
 
         for i in range(0, 9):
             for j in range(0, 9):
-                if curr_board[i][j] == str(self.tru_board[i][j]) or int(self.tru_board[i][j]):
+                if int(self.curr_board[i][j]) == int(self.tru_board[i][j]):
                     pass
                 else:
                     return False
