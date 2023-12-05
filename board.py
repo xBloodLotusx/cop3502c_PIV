@@ -1,6 +1,7 @@
 from cell import Cell
 from sudoku_generator import SudokuGenerator as SG
 import pygame
+import copy
 
 
 class Board:
@@ -15,22 +16,26 @@ class Board:
         self.sudoku_array = None
         self.sudoku_values = None
         self.tru_board = None
+        self.board = []
 
         if self.difficulty == "Easy":
             self.sudoku_array = SG(9, 30)
-            self.tru_board = self.sudoku_array.fill_values()
+            self.sudoku_array.fill_values()
+            self.tru_board = copy.deepcopy(self.sudoku_array.get_board())
             self.sudoku_array.remove_cells()
             self.sudoku_values = self.sudoku_array.get_board()
 
         if self.difficulty == "Medium":
             self.sudoku_array = SG(9, 40)
-            self.tru_board = self.sudoku_array.fill_values()
+            self.sudoku_array.fill_values()
+            self.tru_board = copy.deepcopy(self.sudoku_array.get_board())
             self.sudoku_array.remove_cells()
             self.sudoku_values = self.sudoku_array.get_board()
 
         if self.difficulty == "Hard":
             self.sudoku_array = SG(9, 50)
-            self.tru_board = self.sudoku_array.fill_values()
+            self.sudoku_array.fill_values()
+            self.tru_board = copy.deepcopy(self.sudoku_array.get_board())
             self.sudoku_array.remove_cells()
             self.sudoku_values = self.sudoku_array.get_board()
 
@@ -157,24 +162,20 @@ class Board:
 
     def check_board(self):
         values_to_check = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-        list_of_cell_values = []
+        curr_board = []
+        row_list = []
         # Checking each row for winner by using the all function
         for rows in range(0, 9):
             for cols in range(0, 9):
-                list_of_cell_values.append(self.cell_2D_array[rows][cols].value)
-            if all(value in list_of_cell_values for value in values_to_check):
-                pass
-            else:
-                return False
-            list_of_cell_values = []
+                row_list.append(self.cell_2D_array[rows][cols].value)
+            curr_board.append(row_list)
 
-        # checking each col for winner by using the all function
-        for cols in range(0, 9):
-            for rows in range(0, 9):
-                list_of_cell_values.append(self.cell_2D_array[rows][cols].value)
-            if all(value in list_of_cell_values for value in values_to_check):
-                pass
-            else:
-                return False
-        # if any row or col returns false it means it's not a solution and is an automatic False
+        for i in range(0, 9):
+            for j in range(0, 9):
+                if curr_board[i][j] == str(self.tru_board[i][j]) or int(self.tru_board[i][j]):
+                    pass
+                else:
+                    return False
         return True
+
+        # if any row or col returns false it means it's not a solution and is an automatic False
