@@ -101,6 +101,7 @@ def draw_game_buttons(screen, height, width):
 
     pygame.display.update()
 
+
 def draw_game_won(screen, height, width):
     title_font = pygame.font.Font(None, 100)
     button_font = pygame.font.Font(None, 60)
@@ -120,8 +121,9 @@ def draw_game_won(screen, height, width):
 
     exit_game_rectangle = exit_game_surface.get_rect(
         center=(width // 2, 450))
-    
+
     screen.blit(exit_game_surface, exit_game_rectangle)
+
 
 def draw_game_over(screen, height, width):
     title_font = pygame.font.Font(None, 100)
@@ -142,8 +144,9 @@ def draw_game_over(screen, height, width):
 
     restart_game_rectangle = restart_game_surface.get_rect(
         center=(width // 2, 450))
-    
+
     screen.blit(restart_game_surface, restart_game_rectangle)
+
 
 if __name__ == '__main__':
     while True:
@@ -161,6 +164,8 @@ if __name__ == '__main__':
         board.draw()
         pygame.display.update()
         draw_game_buttons(screen, height, width)
+
+        print(board.tru_board)
 
         loop_var = True
         while loop_var:
@@ -200,11 +205,11 @@ if __name__ == '__main__':
 
             pygame.display.update()
 
-        loop_var2 = True
+        loop_var2 = board.is_full()
         while loop_var2:
-            board.check_board()
+            win_var = board.check_board()
             print(board.check_board())
-            if board.check_board():
+            if win_var:
                 screen.fill((255, 255, 255))
                 draw_game_won(screen, height, width)
                 for event in pygame.event.get():
@@ -225,6 +230,7 @@ if __name__ == '__main__':
                         if restart_game_rectangle.collidepoint(event.pos):
                             screen.fill((255, 255, 255))
                             loop_var2 = False
+                            break
                 pygame.display.update()
 
 # bruh
