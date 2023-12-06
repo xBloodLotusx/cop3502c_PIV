@@ -18,7 +18,7 @@ class Board:
         self.tru_board = None
         self.board = []
         self.curr_board = []
-
+        # Initializes sudoku solution and values depending on difficulty
         if self.difficulty == "Easy":
             self.sudoku_array = SG(9, 30)
             self.sudoku_array.fill_values()
@@ -40,19 +40,23 @@ class Board:
             self.sudoku_array.remove_cells()
             self.sudoku_values = self.sudoku_array.get_board()
 
+        # Initializes 81 cell objects in a 2d array, with cell values determined by the generated sudoku
         for i in range(1, 10):
             for j in range(1, 10):
                 self.cell_row.append(Cell(self.sudoku_values[i - 1][j - 1], 0, i, j, self.screen))
             self.cell_2D_array.append(self.cell_row)
             self.cell_row = []
 
+    # Draws board outline with every cell
     def draw(self):
-        # Horizontal lines
+        # HORIZONTAL LINES
 
+        # Bolded lines
         pygame.draw.line(self.screen, (245, 152, 66), (0, (self.height / 3)), (self.width, (self.height / 3)), 12)
         pygame.draw.line(self.screen, (245, 152, 66), (0, ((self.height * 2) / 3)), (self.width, ((self.height * 2) / 3)), 12)
         pygame.draw.line(self.screen, (245, 152, 66), (0, ((self.height * 3) / 3)), (self.width, ((self.height * 3) / 3)), 12)
 
+        # Lines for inner 3by3 grids
         pygame.draw.line(self.screen, (245, 152, 66), (0, self.height / 9), (self.width, self.height / 9), 4)
         pygame.draw.line(self.screen, (245, 152, 66), (0, (self.height * 2) / 9), (self.width, (self.height * 2) / 9), 4)
 
@@ -61,11 +65,14 @@ class Board:
 
         pygame.draw.line(self.screen, (245, 152, 66), (0, (self.height * 7) / 9), (self.width, (self.height * 7) / 9), 4)
         pygame.draw.line(self.screen, (245, 152, 66), (0, (self.height * 8) / 9), (self.width, (self.height * 8) / 9), 4)
+
         # VERTICAL LINES
 
+        # Bolded lines
         pygame.draw.line(self.screen, color=(245, 152, 66), start_pos=(self.width / 3, 0), end_pos=(self.width / 3, self.height), width=14)
         pygame.draw.line(self.screen, color=(245, 152, 66), start_pos=((self.width * 2) / 3, 0), end_pos=((self.width * 2) / 3, self.height), width=14)
 
+        # Lines for inner 3by3 grids
         pygame.draw.line(self.screen, (245, 152, 66), (self.width / 9, 0), (self.width / 9, self.height), 4)
         pygame.draw.line(self.screen, (245, 152, 66), ((self.width * 2) / 9, 0), ((self.width * 2) / 9, self.height), 4)
 
@@ -76,6 +83,10 @@ class Board:
         pygame.draw.line(self.screen, (245, 152, 66), ((self.width * 8) / 9, 0), ((self.width * 8) / 9, self.height), 4)
         pass
 
+    # Creates a selected drawing around cell that was clicked based on row and col provided by the click function, with
+    # exception for index error if a click is out of the boards bounds, and whenever the function is called it assigns
+    # a selected cell for use in other functions, and re draws the board outline so that the previous selected outlines
+    # cannot be seen
     def select(self, row, col):
         if self.selected_cell is not None:
             self.draw()
@@ -96,6 +107,8 @@ class Board:
         except IndexError:
             pass
 
+    # takes x and y coordinates of a click and converts them to a tuple of the column and row the click is located at
+    # for the selected function to use.
     def click(self, x, y):
         if 0 < y < 500:
             row = (y // int(500 // 9)) + 1
@@ -104,9 +117,9 @@ class Board:
             return tuple_1
         else:
             return None
-
-    def clear(self):
-        self.selected_cell.set_cell_value(0)
+    # Calls the sketch function and changes the sketch value when the cell value is not already entered and if there's
+    # already a sketch then it clears the previous sketch first which uses the previous sketch values before setting the
+    # new sketch value
 
     def sketch(self, value):
         if self.selected_cell.value == 0:
@@ -120,11 +133,14 @@ class Board:
         if self.selected_cell.value != 0:
             pass
 
+    # Calls when a sketched value is entered and clears the previous sketch and draws the true value.
     def place_number(self, sketched_value):
         self.selected_cell.clear_sketch()
         self.selected_cell.set_cell_value(sketched_value)
         self.selected_cell.draw_true()
 
+    # Resets the entire board back to the original by taking every cell that has a non-zero sketched value being a cell
+    # that was interacted by the player and is the only cells that need to be reset
     def reset_to_original(self):
         for i in range(0, 9):
             for j in range(0, 9):
@@ -136,6 +152,8 @@ class Board:
                     self.cell_2D_array[i][j].set_cell_value(0)
         pass
 
+    # Creates a local capacity variable and checks the true value of each cell and waits until all 81 cells are counted
+    # up to declare as full, with a boolean value
     def is_full(self):
         capacity = 0
         for rows in range(0, 9):
@@ -149,23 +167,11 @@ class Board:
         else:
             return False
 
-    def update_board(self):
-        pass
-
-    def find_empty(self):
-        for rows in self.cell_2D_array:
-            for cols in rows:
-                if cols.value == 0:
-                    tuple_2 = (cols.row, cols.col)
-                    return tuple_2
-                else:
-                    pass
-
+    # Checks if board is solved correctly by comparing every value in the current board to the solution board and
+    # returning a boolean value depending on if it's a correct or incorrect board
     def check_board(self):
-        values_to_check = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         self.curr_board = []
         row_list = []
-        # Checking each row for winner by using the all function
         for rows in range(0, 9):
             for cols in range(0, 9):
                 row_list.append(self.cell_2D_array[rows][cols].value)
@@ -174,10 +180,9 @@ class Board:
 
         for i in range(0, 9):
             for j in range(0, 9):
-                if int(self.curr_board[i][j]) == int(self.tru_board[i][j]):
+                if int(self.curr_board[i][j]) == self.tru_board[i][j]:
                     pass
                 else:
                     return False
         return True
 
-        # if any row or col returns false it means it's not a solution and is an automatic False
