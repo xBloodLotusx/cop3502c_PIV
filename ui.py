@@ -7,6 +7,8 @@ global reset_rectangle
 global exit_rectangle
 
 
+# Uses pygame drawing functions to draw the main menu screen, as well as making the recurring buttons global for easy
+# access from their assignments in the functions
 def draw_game_start(screen, height, width):
     start_title_font = pygame.font.Font(None, 100)
     mode_font = pygame.font.Font(None, 70)
@@ -49,6 +51,7 @@ def draw_game_start(screen, height, width):
     screen.blit(medium_surface, medium_rectangle)
     screen.blit(hard_surface, hard_rectangle)
 
+    # listens for button push on the difficulty
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -65,6 +68,8 @@ def draw_game_start(screen, height, width):
                     difficulty_var = "Hard"
                     return difficulty_var
         pygame.display.update()
+
+# Drawing the game buttons during the sudoku game, with corresponding colide points for user interaction
 
 
 def draw_game_buttons(screen, height, width):
@@ -101,6 +106,8 @@ def draw_game_buttons(screen, height, width):
 
     pygame.display.update()
 
+# Creates the screen for the game win scenario, including the exit button
+
 
 def draw_game_won(screen, height, width):
     title_font = pygame.font.Font(None, 100)
@@ -123,6 +130,8 @@ def draw_game_won(screen, height, width):
         center=(width // 2, 450))
 
     screen.blit(exit_game_surface, exit_game_rectangle)
+
+# Creates the game over screen along with the restart button to start the game again
 
 
 def draw_game_over(screen, height, width):
@@ -166,6 +175,10 @@ if __name__ == '__main__':
         draw_game_buttons(screen, height, width)
 
         print(board.tru_board)
+# PRINTING THE BOARD SOLUTION FOR TESTING
+
+# set the height and width for the screen as well as the Board object, calling the game start screen, and after game
+# start screen has been finished with interaction the board is drawn
 
         loop_var = True
         while loop_var:
@@ -203,23 +216,18 @@ if __name__ == '__main__':
                         if board.is_full is False:
                             pass
 
+            # While loop while the game is running with the program listening for mouse clicks for selecting, text input
+            # for numbers to be sketched in the board, and listens for exiting the window or clicks the game buttons for
+            # resetting or exiting or restarting
+
             pygame.display.update()
+
+        # Loop variables for the game over and game win screens triggered when the first while loop_var of the game
+        # breaks when the board is full, and listens for click on restart button in the gameover screen, but if
 
         loop_var2 = board.is_full()
         while loop_var2:
-            win_var = board.check_board()
-            print(board.check_board())
-            if win_var:
-                screen.fill((255, 255, 255))
-                draw_game_won(screen, height, width)
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        pygame.quit()
-                        sys.exit()
-                    if event.type == pygame.MOUSEBUTTONDOWN:
-                        if exit_game_rectangle.collidepoint(event.pos):
-                            sys.exit()
-            else:
+            if board.check_board() is False:
                 screen.fill((255, 255, 255))
                 draw_game_over(screen, height, width)
                 for event in pygame.event.get():
@@ -231,6 +239,24 @@ if __name__ == '__main__':
                             screen.fill((255, 255, 255))
                             loop_var2 = False
                             break
-                pygame.display.update()
 
-# bruh
+            else:
+                loop_var2 = False
+            pygame.display.update()
+
+        # Loop for win begins after check board function returns true and returns the win game screen
+
+        win_var = board.check_board()
+        while win_var:
+            if board.check_board():
+                screen.fill((255, 255, 255))
+                draw_game_won(screen, height, width)
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if exit_game_rectangle.collidepoint(event.pos):
+                            sys.exit()
+
+            pygame.display.update()
